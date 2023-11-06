@@ -5,6 +5,7 @@ import { httpGetLaunches, httpSubmitLaunch, httpAbortLaunch } from './requests';
 function useLaunches(onSuccessSound, onAbortSound, onFailureSound) {
   const [launches, saveLaunches] = useState([]);
   const [isPendingLaunch, setPendingLaunch] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const getLaunches = useCallback(async () => {
     const fetchedLaunches = await httpGetLaunches();
@@ -19,6 +20,7 @@ function useLaunches(onSuccessSound, onAbortSound, onFailureSound) {
     async (e) => {
       e.preventDefault();
       setPendingLaunch(true);
+      setErrorMessage('');
       const data = new FormData(e.target);
       const launchDate = new Date(data.get('launch-day'));
       const mission = data.get('mission-name');
@@ -31,6 +33,10 @@ function useLaunches(onSuccessSound, onAbortSound, onFailureSound) {
         target,
       });
 
+      if (!mission) {
+        setErrorMessage('Mission Name is required');
+      }
+
       const success = response.ok;
       if (success) {
         getLaunches();
@@ -39,6 +45,7 @@ function useLaunches(onSuccessSound, onAbortSound, onFailureSound) {
           onSuccessSound();
         }, 800);
       } else {
+        setPendingLaunch(false); // Stop loading animation
         onFailureSound();
       }
     },
@@ -63,6 +70,7 @@ function useLaunches(onSuccessSound, onAbortSound, onFailureSound) {
   return {
     launches,
     isPendingLaunch,
+    errorMessage,
     submitLaunch,
     abortLaunch,
   };

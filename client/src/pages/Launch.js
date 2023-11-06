@@ -49,7 +49,15 @@ const Launch = (props) => {
           defaultValue={today}
         />
         <label htmlFor='mission-name'>Mission Name</label>
-        <input type='text' id='mission-name' name='mission-name' />
+        <input
+          type='text'
+          id='mission-name'
+          name='mission-name'
+          placeholder={props.errorMessage ? 'Mission Name is required' : ''}
+          style={{
+            fontSize: '0.7rem',
+          }}
+        />
         <label htmlFor='rocket-name'>Rocket Type</label>
         <input
           type='text'

@@ -42,11 +42,8 @@ const AppLayout = (props) => {
   const onAbortSound = () => sounds.abort && sounds.abort.play();
   const onFailureSound = () => sounds.warning && sounds.warning.play();
 
-  const { launches, isPendingLaunch, submitLaunch, abortLaunch } = useLaunches(
-    onSuccessSound,
-    onAbortSound,
-    onFailureSound
-  );
+  const { launches, isPendingLaunch, errorMessage, submitLaunch, abortLaunch } =
+    useLaunches(onSuccessSound, onAbortSound, onFailureSound);
 
   const planets = usePlanets();
 
@@ -69,6 +66,7 @@ const AppLayout = (props) => {
                     planets={planets}
                     submitLaunch={submitLaunch}
                     isPendingLaunch={isPendingLaunch}
+                    errorMessage={errorMessage}
                   />
                 </Route>
                 <Route exact path='/launch'>
@@ -77,6 +75,7 @@ const AppLayout = (props) => {
                     planets={planets}
                     submitLaunch={submitLaunch}
                     isPendingLaunch={isPendingLaunch}
+                    errorMessage={errorMessage}
                   />
                 </Route>
                 <Route exact path='/upcoming'>
